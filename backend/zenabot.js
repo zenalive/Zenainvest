@@ -1,45 +1,39 @@
-// backend/zenabot.js
+import pkg from 'okx-api';
 import dotenv from 'dotenv';
 dotenv.config();
 
-import { TradeApi } from 'okx-api';
-
-const MODE = 'conservador'; // ou 'agressivo'
-const SYMBOL = 'BTC-USDT'; // formato OKX
-const SIZE = MODE === 'agressivo' ? '0.002' : '0.001';
-
-const apiKey = process.env.OKX_API_KEY;
-const apiSecret = process.env.OKX_API_SECRET;
-const passphrase = process.env.OKX_API_PASSPHRASE;
-
-if (!apiKey || !apiSecret || !passphrase) {
-  console.error('❌ Credenciais da API OKX não encontradas. Verifique o .env.');
-  process.exit(1);
-}
+const { TradeApi } = pkg;
 
 const tradeApi = new TradeApi({
-  apiKey,
-  apiSecret,
-  passphrase,
-  demoTrading: false // mudar para true se estiver usando conta demo
+  apiKey: process.env.OKX_API_KEY,
+  apiSecret: process.env.OKX_API_SECRET,
+  passphrase: process.env.OKX_API_PASSPHRASE,
 });
 
-async function executarCompra() {
-  try {
-    console.log(`🤖 Iniciando ZenaBot no modo ${MODE}`);
+const SYMBOL = 'BTC-USDT';
+const MODO = 'conservador'; // ou 'agressivo'
+const QUANTIDADE = MODO === 'agressivo' ? '0.002' : '0.001';
 
-    const result = await tradeApi.placeOrder({
+async function iniciarBot() {
+  try {
+    console.log('🤖 Iniciando ZenaBot no modo', MODO);
+
+    const ticker = await tradeApi.getTicker(SYMBOL);
+    const precoAtual = ticker.last;
+    console.log(`Preço atual do ${SYMBOL}: US$ ${precoAtual}`);
+
+    const ordem = await tradeApi.placeOrder({
       instId: SYMBOL,
       tdMode: 'cash',
       side: 'buy',
       ordType: 'market',
-      sz: SIZE
+      sz: QUANTIDADE,
     });
 
-    console.log('✅ Ordem de compra executada com sucesso:', result);
+    console.log('✅ Ordem de compra executada:', ordem);
   } catch (error) {
-    console.error('❌ Erro ao executar ordem de compra:', error.message || error);
+    console.error('❌ Erro ao executar o bot:', error.message || error);
   }
 }
 
-executarCompra();
+iniciarBot();
