@@ -1,12 +1,17 @@
-import okx from 'okx-api';
+import pkg from 'okx-api';
+const { RestClient } = pkg;
+
 import dotenv from 'dotenv';
 dotenv.config();
 
-const tradeApi = okx.TradeApi({
-  apiKey: process.env.OKX_API_KEY,
-  apiSecret: process.env.OKX_API_SECRET,
-  passphrase: process.env.OKX_API_PASSPHRASE,
+const client = new RestClient({
+  key: process.env.OKX_API_KEY,
+  secret: process.env.OKX_API_SECRET,
+  passphrase: process.env.OKX_API_PASSPHRASE
 });
+
+
+
 
 const SYMBOL = 'BTC-USDT';
 const MODO = 'conservador'; // ou 'agressivo'
