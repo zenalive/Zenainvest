@@ -1,38 +1,45 @@
-import { OKXRestClient } from 'okx-api';
+// backend/zenabot.js
 import dotenv from 'dotenv';
 dotenv.config();
 
-const okx = new OKXRestClient({
-  apiKey: process.env.OKX_API_KEY,
-  apiSecret: process.env.OKX_API_SECRET,
-  passphrase: process.env.OKX_API_PASSPHRASE,
-  useServerTime: true,
+import { TradeApi } from 'okx-api';
+
+const MODE = 'conservador'; // ou 'agressivo'
+const SYMBOL = 'BTC-USDT'; // formato OKX
+const SIZE = MODE === 'agressivo' ? '0.002' : '0.001';
+
+const apiKey = process.env.OKX_API_KEY;
+const apiSecret = process.env.OKX_API_SECRET;
+const passphrase = process.env.OKX_API_PASSPHRASE;
+
+if (!apiKey || !apiSecret || !passphrase) {
+  console.error('❌ Credenciais da API OKX não encontradas. Verifique o .env.');
+  process.exit(1);
+}
+
+const tradeApi = new TradeApi({
+  apiKey,
+  apiSecret,
+  passphrase,
+  demoTrading: false // mudar para true se estiver usando conta demo
 });
 
-const SYMBOL = 'BTC-USDT'; // formato da OKX
-const MODO = 'conservador'; // ou 'agressivo'
-const QUANTIDADE = MODO === 'agressivo' ? '0.002' : '0.001';
-
-async function iniciarBot() {
+async function executarCompra() {
   try {
-    console.log('🤖 Iniciando ZenaBot (OKX) no modo', MODO);
+    console.log(`🤖 Iniciando ZenaBot no modo ${MODE}`);
 
-    const ticker = await okx.getTicker(SYMBOL);
-    const precoAtual = parseFloat(ticker.last);
-    console.log(`Preço atual do ${SYMBOL}: US$ ${precoAtual}`);
-
-    const ordem = await okx.placeOrder({
+    const result = await tradeApi.placeOrder({
       instId: SYMBOL,
       tdMode: 'cash',
       side: 'buy',
       ordType: 'market',
-      sz: QUANTIDADE,
+      sz: SIZE
     });
 
-    console.log('✅ Ordem de compra executada:', ordem);
+    console.log('✅ Ordem de compra executada com sucesso:', result);
   } catch (error) {
-    console.error('❌ Erro ao executar o bot:', error.response?.data || error.message);
+    console.error('❌ Erro ao executar ordem de compra:', error.message || error);
   }
 }
 
-iniciarBot();
+executarCompra();
