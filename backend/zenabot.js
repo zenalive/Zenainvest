@@ -33,14 +33,14 @@ async function iniciarBot() {
     const ordem = await client.placeOrder({
       instId: SYMBOL,
       tdMode: 'cash',
-      clOrdId: `zenabot_${Date.now()}`,
+      clOrdId: `zena_${Date.now()}`, // ID único da ordem
       side: 'buy',
       ordType: 'market',
       sz: QUANTIDADES[modoAtual],
-      tag: 'ZenaBot'
+      tag: 'zenainvest', // tag identificadora
     });
 
-    console.log('✅ Ordem de compra executada:', ordem?.data || ordem);
+    console.log('✅ Ordem de compra executada:', ordem);
   } catch (error) {
     console.error('❌ Erro ao executar o bot:', error.response?.data || error.message || error);
   }
