@@ -2,11 +2,12 @@
   "name": "zenainvest",
   "version": "1.0.0",
   "type": "module",
-  "dependencies": {
-  "axios": "^1.6.7",
-  "dotenv": "^16.4.5"
-}
+  "main": "backend/zenabot.js",
   "scripts": {
     "start": "node backend/zenabot.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.7",
+    "dotenv": "^16.4.5"
   }
 }
