@@ -7,10 +7,7 @@ const binance = new Binance().options({
   APISECRET: process.env.BINANCE_API_SECRET,
   useServerTime: true,
   reconnect: true,
-  proxy: 'http://qlqsy...@207.244.217.165:6712', // Substitua aqui pelo seu proxy válido
-  urls: {
-    base: 'https://api.binance.com',
-  }
+  proxy: 'http://qlqsy...@207.244.217.165:6712', // Substitua pelo seu proxy
 });
 
 const SYMBOL = 'BTCUSDT';
