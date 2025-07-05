@@ -1,3 +1,4 @@
+import { RestClient } from 'okx-api';
 import dotenv from 'dotenv';
 dotenv.config();
 
