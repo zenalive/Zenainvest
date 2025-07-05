@@ -7,30 +7,36 @@ dotenv.config();
 const client = new RestClient({
   key: process.env.OKX_API_KEY,
   secret: process.env.OKX_API_SECRET,
-  passphrase: process.env.OKX_API_PASSPHRASE
+  passphrase: process.env.OKX_API_PASSPHRASE,
 });
 
-
-
-
 const SYMBOL = 'BTC-USDT';
-const MODO = 'conservador'; // ou 'agressivo'
-const QUANTIDADE = MODO === 'agressivo' ? '0.002' : '0.001';
+let modoAtual = 'conservador';
+const QUANTIDADES = {
+  conservador: '0.001',
+  agressivo: '0.002',
+};
+
+// Alternador de modo
+function alternarModo() {
+  modoAtual = modoAtual === 'conservador' ? 'agressivo' : 'conservador';
+  console.log(`🔁 Modo alterado para: ${modoAtual}`);
+}
 
 async function iniciarBot() {
   try {
-    console.log('🤖 Iniciando ZenaBot no modo', MODO);
+    console.log('🤖 Iniciando ZenaBot no modo', modoAtual);
 
-    const ticker = await tradeApi.getTicker(SYMBOL);
+    const ticker = await client.getTicker(SYMBOL);
     const precoAtual = ticker.last;
-    console.log(`Preço atual do ${SYMBOL}: US$ ${precoAtual}`);
+    console.log(`💰 Preço atual do ${SYMBOL}: US$ ${precoAtual}`);
 
-    const ordem = await tradeApi.placeOrder({
+    const ordem = await client.placeOrder({
       instId: SYMBOL,
       tdMode: 'cash',
       side: 'buy',
       ordType: 'market',
-      sz: QUANTIDADE,
+      sz: QUANTIDADES[modoAtual],
     });
 
     console.log('✅ Ordem de compra executada:', ordem);
