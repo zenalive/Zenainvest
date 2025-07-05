@@ -1,5 +1,5 @@
 {
-  "name": "zenabot",
+  "name": "zenainvest",
   "version": "1.0.0",
   "type": "module",
   "main": "backend/zenabot.js",
@@ -7,7 +7,7 @@
     "start": "node backend/zenabot.js"
   },
   "dependencies": {
-    "node-binance-api": "^1.0.0",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "okx-api": "^1.0.5"
   }
 }
