@@ -1,10 +1,8 @@
-import pkg from 'okx-api';
+import okx from 'okx-api';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const { TradeApi } = pkg;
-
-const tradeApi = new TradeApi({
+const tradeApi = okx.TradeApi({
   apiKey: process.env.OKX_API_KEY,
   apiSecret: process.env.OKX_API_SECRET,
   passphrase: process.env.OKX_API_PASSPHRASE,
