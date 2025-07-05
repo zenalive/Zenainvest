@@ -1,31 +1,37 @@
-import Binance from 'node-binance-api';
+import { OKXRestClient } from 'okx-api';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const binance = new Binance().options({
-  APIKEY: process.env.BINANCE_API_KEY,
-  APISECRET: process.env.BINANCE_API_SECRET,
+const okx = new OKXRestClient({
+  apiKey: process.env.OKX_API_KEY,
+  apiSecret: process.env.OKX_API_SECRET,
+  passphrase: process.env.OKX_API_PASSPHRASE,
   useServerTime: true,
-  reconnect: true,
-  proxy: 'http://qlqsy...@207.244.217.165:6712', // Substitua pelo seu proxy
 });
 
-const SYMBOL = 'BTCUSDT';
+const SYMBOL = 'BTC-USDT'; // formato da OKX
 const MODO = 'conservador'; // ou 'agressivo'
-const QUANTIDADE = MODO === 'agressivo' ? 0.002 : 0.001;
+const QUANTIDADE = MODO === 'agressivo' ? '0.002' : '0.001';
 
 async function iniciarBot() {
   try {
-    console.log('🤖 Iniciando ZenaBot no modo', MODO);
+    console.log('🤖 Iniciando ZenaBot (OKX) no modo', MODO);
 
-    const ticker = await binance.prices(SYMBOL);
-    const precoAtual = parseFloat(ticker[SYMBOL]);
+    const ticker = await okx.getTicker(SYMBOL);
+    const precoAtual = parseFloat(ticker.last);
     console.log(`Preço atual do ${SYMBOL}: US$ ${precoAtual}`);
 
-    const ordem = await binance.marketBuy(SYMBOL, QUANTIDADE);
+    const ordem = await okx.placeOrder({
+      instId: SYMBOL,
+      tdMode: 'cash',
+      side: 'buy',
+      ordType: 'market',
+      sz: QUANTIDADE,
+    });
+
     console.log('✅ Ordem de compra executada:', ordem);
   } catch (error) {
-    console.error('❌ Erro ao executar o bot:', error.body || error);
+    console.error('❌ Erro ao executar o bot:', error.response?.data || error.message);
   }
 }
 
