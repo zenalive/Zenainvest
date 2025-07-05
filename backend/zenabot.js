@@ -14,11 +14,10 @@ async function iniciarBot() {
   try {
     console.log('🤖 Testando conexão com OKX...');
 
-    // ✅ Método correto para pegar o saldo da conta
-    const contas = await client.account.getBalance();
-
+    // ✅ Correção aqui: não usa .account.getBalance
+    const saldo = await client.getBalance();
     console.log('✅ Conexão bem-sucedida!');
-    console.log('💼 Saldos disponíveis:', contas);
+    console.log('💰 Saldo OKX:', saldo);
 
   } catch (error) {
     console.error('❌ Erro na conexão:', error.response?.data || error.message || error);
