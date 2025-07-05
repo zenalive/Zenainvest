@@ -14,8 +14,8 @@ async function iniciarBot() {
   try {
     console.log('🤖 Testando conexão com OKX...');
 
-    // Busca o saldo da conta
-    const contas = await client.getAccountBalance();
+    // ✅ Método correto para pegar o saldo da conta
+    const contas = await client.account.getBalance();
 
     console.log('✅ Conexão bem-sucedida!');
     console.log('💼 Saldos disponíveis:', contas);
