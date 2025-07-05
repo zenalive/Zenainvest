@@ -17,7 +17,6 @@ const QUANTIDADES = {
   agressivo: '0.002',
 };
 
-// Alternador de modo
 function alternarModo() {
   modoAtual = modoAtual === 'conservador' ? 'agressivo' : 'conservador';
   console.log(`🔁 Modo alterado para: ${modoAtual}`);
@@ -28,7 +27,9 @@ async function iniciarBot() {
     console.log('🤖 Iniciando ZenaBot no modo', modoAtual);
 
     const ticker = await client.getTicker(SYMBOL);
-    const precoAtual = ticker.last;
+    console.log('🧾 Ticker completo:', ticker);
+
+    const precoAtual = ticker?.data?.[0]?.last || 'N/A';
     console.log(`💰 Preço atual do ${SYMBOL}: US$ ${precoAtual}`);
 
     const ordem = await client.placeOrder({
