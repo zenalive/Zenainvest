@@ -8,6 +8,6 @@
   },
   "dependencies": {
     "dotenv": "^16.3.1",
-    "okx-api": "^1.0.5"
+    "okx-api": "^1.0.7"
   }
 }
