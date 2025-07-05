@@ -10,39 +10,18 @@ const client = new RestClient({
   passphrase: process.env.OKX_API_PASSPHRASE,
 });
 
-const SYMBOL = 'BTC-USDT';
-let modoAtual = 'conservador';
-const QUANTIDADES = {
-  conservador: '0.001',
-  agressivo: '0.002',
-};
-
-function alternarModo() {
-  modoAtual = modoAtual === 'conservador' ? 'agressivo' : 'conservador';
-  console.log(`🔁 Modo alterado para: ${modoAtual}`);
-}
-
 async function iniciarBot() {
   try {
-    console.log('🤖 Iniciando ZenaBot no modo', modoAtual);
+    console.log('🤖 Testando conexão com OKX...');
 
-    const ticker = await client.getTicker(SYMBOL);
-    const precoAtual = ticker?.data?.[0]?.last || 'N/A';
-    console.log(`💰 Preço atual do ${SYMBOL}: US$ ${precoAtual}`);
+    // Busca o saldo da conta
+    const contas = await client.getAccountBalance();
 
-    const ordem = await client.placeOrder({
-      instId: SYMBOL,
-      tdMode: 'cash',
-      clOrdId: `zena_${Date.now()}`, // ID único da ordem
-      side: 'buy',
-      ordType: 'market',
-      sz: QUANTIDADES[modoAtual],
-      tag: 'zenainvest', // tag identificadora
-    });
+    console.log('✅ Conexão bem-sucedida!');
+    console.log('💼 Saldos disponíveis:', contas);
 
-    console.log('✅ Ordem de compra executada:', ordem);
   } catch (error) {
-    console.error('❌ Erro ao executar o bot:', error.response?.data || error.message || error);
+    console.error('❌ Erro na conexão:', error.response?.data || error.message || error);
   }
 }
 
