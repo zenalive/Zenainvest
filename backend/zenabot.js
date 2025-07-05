@@ -33,7 +33,7 @@ async function iniciarBot() {
     const ordem = await client.placeOrder({
       instId: SYMBOL,
       tdMode: 'cash',
-      clOrdId: `zenabot_${Date.now()}`, // ID único
+      clOrdId: `zenabot_${Date.now()}`,
       side: 'buy',
       ordType: 'market',
       sz: QUANTIDADES[modoAtual],
