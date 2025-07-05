@@ -2,12 +2,11 @@
   "name": "zenainvest",
   "version": "1.0.0",
   "type": "module",
-  "main": "backend/zenabot.js",
+  "dependencies": {
+    "okx-api": "^2.0.5",
+    "dotenv": "^16.0.0"
+  },
   "scripts": {
     "start": "node backend/zenabot.js"
-  },
-  "dependencies": {
-    "dotenv": "^16.3.1",
-    "okx-api": "^1.0.7"
   }
 }
