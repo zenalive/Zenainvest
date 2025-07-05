@@ -8,9 +8,9 @@ const binance = new Binance().options({
   useServerTime: true,
   reconnect: true,
   urls: {
-    base: 'https://api.binance.com',
-    proxy: 'http://qlqsymzq:3t80mjibvr0l@207.244.217.165:6712'
-  }
+  base: 'https://api.binance.com',
+  proxy: 'http://qlqsymzq:3t80mjibvr0l@207.244.217.165:6712'
+}
 });
 
 
