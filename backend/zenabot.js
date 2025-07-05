@@ -5,8 +5,14 @@ dotenv.config();
 const binance = new Binance().options({
   APIKEY: process.env.BINANCE_API_KEY,
   APISECRET: process.env.BINANCE_API_SECRET,
-  proxy: `http://${process.env.PROXY_USERNAME}:${process.env.PROXY_PASSWORD}@${process.env.PROXY_HOST}:${process.env.PROXY_PORT}`
+  useServerTime: true,
+  reconnect: true,
+  urls: {
+    base: 'https://api.binance.com',
+    proxy: 'http://qlqsymzq:3t80mjibvr0l@207.244.217.165:6712'
+  }
 });
+
 
 
 const SYMBOL = 'BTCUSDT';
